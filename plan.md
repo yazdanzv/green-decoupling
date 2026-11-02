@@ -998,7 +998,58 @@ submission copies separate from drafts.
 
 **Decision record:** D002 establishes the two application formats. Other release
 choices pending. D005 requires one submitted Windows executable with no separately
-delivered support files. Implementation and checks: not started.
+delivered support files. Final release implementation remains pending; initial
+Mac window testing is recorded below.
+
+**Window testing and fix — 2026-11-02:** the user requested testing in the
+application window. Tested the native macOS Apple Silicon preview, both manually
+and with rendered checks. This is not evidence of Windows compatibility.
+
+- Manual country search, start/end changes, China/Germany comparisons, a third
+  additional-country attempt and source-share selection updated the linked
+  charts correctly. The comparison limit retained the first two and explained it.
+- Found a real WebKit layout defect: responsive graphs could lose their host
+  height after filter updates, restoring a hidden view, or resizing. Charts then
+  overlapped later panels. A regression check reproduced the failure. Graph
+  hosts now receive explicit heights from the figure specifications, updated
+  with each figure, while retaining responsive width/plot sizing.
+- Rebuilt `dist/GreenDecoupling.app`. The final packaged smoke run passed nine
+  geometry checks: initial layout, updated growth controls, unavailable 2024
+  pairs/all-20 ranking, restored pairs, both views at 800x600 and 1380x900, and
+  reset. Checks require three visible graphs, positive usable heights, drawings
+  inside their hosts/sections, and no horizontal page overflow. Failure reports
+  include geometry diagnostics; report/export paths are resolved before startup.
+- Packaged callbacks passed: country focus, selected-year rebasing, three-country
+  trends, source share, view switching, missing consumption in 2024, territorial
+  and per-capita rankings, all-20 display, CSV/PNG save bridge and reset. No
+  external resource requests were observed.
+- In the rebuilt window, manually selected 2024, per-capita and all 20; clicked
+  the United States ranking bar and observed the shared focus and history update.
+  Saved CSV and PNG using real native dialogs; cancelled another save and saw
+  “Save cancelled.” The CSV contains exactly 20 rows for 2024 with missing
+  consumption retained. The accessible table also shows unavailable values.
+  Opened the methods panel and verified reset restores Germany, 1990–2022,
+  empty comparisons, amount units, 2022 snapshot and default ranking settings.
+- Keyboard view switching passed with left/right arrows once the radio control
+  was focused. Under this Mac's keyboard-navigation settings, Option-Tab is
+  needed to include native radio controls in focus traversal.
+- All 21 data/dashboard unit/integration tests passed after the chart fix. The
+  raw CSV and codebook SHA-256 hashes remain unchanged. Exported PNG signatures,
+  dimensions and chunk checksums were validated; the chart layout was visually
+  inspected after the fix.
+
+Local evidence (generated, ignored by Git):
+`outputs/layout-before-fix.json`, `outputs/layout-source-smoke.json`,
+`outputs/layout-macos-smoke-final.json`, `outputs/dashboard-tests.log`,
+`outputs/window-test-footprints-2024.csv`, `outputs/window-test-ranking-2024.png`,
+and `outputs/window-test-corrected-layout.png`.
+
+**Remaining:** no Windows VM/runtime was found on this Mac (no Parallels, VMware,
+UTM, VirtualBox, QEMU or Wine environment). The Windows `.exe`, WebView2 dependency
+delivery, missing-runtime handling and clean Windows-machine testing remain
+unverified. Independent Mac testing, signing/notarization, final attribution,
+formal accessibility/user evaluation and final submission acceptance remain open.
+Do not mark Step 9 or either final deliverable complete.
 
 ## Template for subsequent decision and completion entries
 

@@ -99,8 +99,11 @@ def chart_section(title, subtitle, graph_id, figure, extra=None, status_id=None,
         html.Div([html.Div([html.H2(title), html.P(subtitle, className="chart-description")]),
                   html.Button("Save PNG", className="quiet-button png-export", **{"data-chart": graph_id})], className="chart-heading"),
         extra,
+        # Responsive Plotly clears layout.height. Give its host an explicit
+        # height so WebKit cannot collapse it after an update or window resize.
         html.Div(dcc.Graph(id=graph_id, figure=figure, config=GRAPH_CONFIG,
-                           responsive=True, className="plot"), role="group", **{"aria-label": f"{title}. {subtitle}"}),
+                           responsive=True, style={"height": f"{figure.layout.height}px"},
+                           className="plot"), role="group", **{"aria-label": f"{title}. {subtitle}"}),
         html.P(status or "", id=status_id, className="chart-note", **{"aria-live": "polite"}) if status_id else None,
     ], className=f"chart-section {class_name}")
 
@@ -223,6 +226,7 @@ def create_app():
         *[Output(id, "figure") for id in ["growth-scatter", "indexed-trend", "source-trend", "accounting-pairs", "accounting-history", "country-ranking"]],
         Output("summary", "children"), Output("growth-coverage", "children"), Output("source-status", "children"),
         Output("pair-status", "children"), Output("history-status", "children"), Output("rank-status", "children"),
+        *[Output(id, "style") for id in ["growth-scatter", "indexed-trend", "source-trend", "accounting-pairs", "accounting-history", "country-ranking"]],
         Input("focus-country", "value"), Input("compare-countries", "value"), Input("start-year", "value"), Input("end-year", "value"),
         Input("snapshot-year", "value"), Input("ranking-metric", "value"), Input("ranking-count", "value"), Input("source-units", "value"),
         Input("reset-counter", "data"),
@@ -231,7 +235,7 @@ def create_app():
         result = render_views(table, focus, comparisons, start, end, snapshot, metric, count, source)
         for figure in result[:6]:
             figure.update_layout(uirevision=f"{figure.layout.uirevision}-reset-{reset_counter}")
-        return result
+        return (*result, *[{"height": f"{figure.layout.height}px"} for figure in result[:6]])
 
     @app.callback(Output("data-table", "children"), Input("view", "value"), Input("focus-country", "value"),
                   Input("compare-countries", "value"), Input("start-year", "value"), Input("end-year", "value"), Input("snapshot-year", "value"))

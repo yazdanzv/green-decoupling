@@ -237,6 +237,8 @@ dist/GreenDecoupling.app/Contents/MacOS/GreenDecoupling --smoke-report outputs/d
 
 The build bundles the prepared dataset, metadata, local CSS/JS and Python
 libraries. The smoke run verifies six rendered charts and linked interactions,
+checks chart containment and horizontal overflow after filter/view changes and
+at 800x600 and 1380x900 in both views,
 checks for external resource loads, tests native export bytes in
 `outputs/smoke-exports/`, writes JSON, then closes. It uses an automatic test
 output folder; real native Save dialogs were separately checked on the Mac.

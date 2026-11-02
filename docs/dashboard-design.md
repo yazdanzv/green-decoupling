@@ -146,3 +146,13 @@ smoke checks; real CSV and PNG Save dialogs; browser layout at 800x600 and
 chart columns stack. Full native preview was visually inspected at 1380x900.
 Formal screen-reader, contrast, independent-user and Windows evaluations remain
 for final acceptance. The user has not yet reviewed this working version.
+
+Additional native window testing found collapsing graph heights after updates
+and resizing in WebKit. Graph hosts now have explicit figure-derived heights
+updated alongside their figures. The rebuilt Mac app passed nine rendered
+geometry checks covering both views at 800x600/1380x900, filter changes, restored
+accounting pairs and reset, with no chart overflow. Manual ranking clicks,
+2024/per-capita/all-20 controls, CSV/PNG saves, cancellation, data/methods panels
+and reset passed. Arrow-key view switching passed after Option-Tab focused the
+radio controls under this Mac's native keyboard settings. See Step 9 in
+`plan.md` for evidence and the still-unverified Windows release requirements.

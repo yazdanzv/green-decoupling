@@ -72,6 +72,26 @@ def check_desktop_interaction(window, report_path):
             time.sleep(0.2)
         raise RuntimeError(f"Timed out: {description}")
 
+    layouts = []
+
+    def check_layout(stage):
+        # Check rendered geometry, not only callback data. Hidden charts have no
+        # usable dimensions until their view is shown.
+        expression = """(() => {
+            const plots = [...document.querySelectorAll('.plot')].filter(p => p.offsetHeight > 0);
+            return document.documentElement.scrollWidth <= innerWidth + 2 &&
+                plots.length === 3 && plots.every(p => {
+                const svg = p.querySelector('.svg-container');
+                if (!svg) return false;
+                const host = p.getBoundingClientRect(), drawing = svg.getBoundingClientRect();
+                const section = p.closest('.chart-section').getBoundingClientRect();
+                return host.height >= 350 && drawing.height <= host.height + 2 &&
+                    drawing.width <= host.width + 2 && drawing.bottom <= section.bottom + 2;
+            });
+        })()"""
+        wait_for(expression, f"charts contained in panels: {stage}")
+        layouts.append(stage)
+
     try:
         if not window.events.loaded.wait(timeout=30):
             raise RuntimeError("Desktop page did not load")
@@ -82,6 +102,7 @@ def check_desktop_interaction(window, report_path):
                    p.data[0].x[0] === 1990 && p.data[0].y[0] === 100 &&
                    {name:p.data[0].name, baseline:p.data[0].y[0]};
         })()""", "initial Germany/baseline data")
+        check_layout("initial")
         evaluate("window.dash_clientside.set_props('focus-country', {value:'USA'})")
         wait_for("document.querySelector('#indexed-trend .js-plotly-plot').data[0].name.includes('United States')", "focus callback")
         evaluate("window.dash_clientside.set_props('start-year', {value:2000})")
@@ -91,12 +112,23 @@ def check_desktop_interaction(window, report_path):
         wait_for("document.querySelector('#indexed-trend .js-plotly-plot').data.length === 6", "three-country comparison")
         evaluate("window.dash_clientside.set_props('source-units', {value:'share'})")
         wait_for("document.querySelector('#source-trend .js-plotly-plot').layout.yaxis.title.text.includes('Share')", "source-unit callback")
+        check_layout("updated growth filters")
         evaluate("window.dash_clientside.set_props('view', {value:'footprints'})")
         evaluate("window.dash_clientside.set_props('snapshot-year', {value:2024})")
         wait_for("document.getElementById('pair-status').textContent.includes('0/20')", "missing-consumption case")
         wait_for("document.querySelector('#country-ranking .js-plotly-plot').data[0].x.length === 10", "territorial ranking remains available")
         evaluate("window.dash_clientside.set_props('ranking-metric', {value:'co2_per_capita'})")
         wait_for("document.querySelector('#country-ranking .js-plotly-plot').layout.xaxis.title.text.includes('person')", "per-capita callback")
+        evaluate("window.dash_clientside.set_props('ranking-count', {value:20})")
+        wait_for("document.querySelector('#country-ranking .js-plotly-plot').data[0].x.length === 20", "all-20 ranking")
+        check_layout("footprints with unavailable pairs and all-20 ranking")
+        evaluate("window.dash_clientside.set_props('snapshot-year', {value:2022})")
+        wait_for("document.getElementById('pair-status').textContent.includes('20/20')", "restored accounting pairs")
+        check_layout("restored paired comparison")
+        for width, height in [(800, 600), (1380, 900)]:
+            window.resize(width, height)
+            wait_for(f"Math.abs(innerWidth - {width}) < 20", "window resize applied")
+            check_layout(f"footprints at {width}x{height}")
         evaluate("document.getElementById('export-csv').click()")
         wait_for("document.getElementById('export-status').textContent.includes('.csv')", "CSV export bridge")
         evaluate("document.querySelector('[data-chart=country-ranking]').click()")
@@ -105,6 +137,12 @@ def check_desktop_interaction(window, report_path):
         wait_for("""(() => {const p=document.querySelector('#indexed-trend .js-plotly-plot');
             return p.data.length===2 && p.data[0].name.includes('Germany') && p.data[0].x[0]===1990 &&
                 document.getElementById('footprints-panel').style.display==='none';})()""", "reset across tabs")
+        check_layout("reset to growth")
+        for width, height in [(800, 600), (1380, 900)]:
+            window.resize(width, height)
+            wait_for(f"Math.abs(innerWidth - {width}) < 20", "window resize applied")
+            check_layout(f"growth at {width}x{height}")
+        report["layout_checks"] = layouts
         external = evaluate("""performance.getEntriesByType('resource').map(e=>e.name)
             .filter(url=>/^https?:/.test(url) && new URL(url).origin!==location.origin)""")
         if external:
@@ -112,10 +150,18 @@ def check_desktop_interaction(window, report_path):
         report.update(passed=True, initial=initial, rendered_charts=6,
                       checks=["focus", "selected-year rebase", "three-country trend", "source share",
                               "tab state", "2024 accounting unavailable", "territorial ranking", "per-capita switch",
-                              "CSV save bridge", "PNG save bridge", "reset", "local assets"],
+                              "all-20 ranking", "CSV save bridge", "PNG save bridge", "reset", "local assets"],
                       external_resources=external)
     except Exception as error:
         report["error"] = str(error)
+        report["layout_checks"] = layouts
+        report["geometry"] = evaluate("""({viewport:innerWidth, page:document.documentElement.scrollWidth,
+            text:document.body.innerText.slice(0,1200),
+            plots:[...document.querySelectorAll('.plot')].map(p=>({
+                id:p.id, host:p.getBoundingClientRect().toJSON(),
+                drawing:p.querySelector('.svg-container')?.getBoundingClientRect().toJSON(),
+                section:p.closest('.chart-section').getBoundingClientRect().toJSON()
+            }))})""")
     finally:
         destination = Path(report_path)
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -128,6 +174,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--smoke-report", type=Path, help="Check UI/callbacks/exports, write JSON and exit")
     args = parser.parse_args()
+    if args.smoke_report:
+        # Cocoa dialogs/WebKit may change the process working directory. Keep
+        # the report and test exports anchored to the caller's original path.
+        args.smoke_report = args.smoke_report.resolve()
     bridge = SaveBridge(args.smoke_report.parent / "smoke-exports" if args.smoke_report else None)
     with local_server(create_app()) as url:
         window = webview.create_window("Green Decoupling", url, width=1380, height=900,
