@@ -1,0 +1,52 @@
+# Local files, credentials, and editor settings.
+.DS_Store
+._*
+.idea/
+.vscode/
+.env
+.env.*
+!.env.example
+!.env.template
+credentials*.json
+service-account*.json
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Python and frontend dependencies, caches, and builds.
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+node_modules/
+dist/
+build/
+coverage/
+.coverage
+.next/
+.svelte-kit/
+.cache/
+tmp/
+*.log
+
+# Keep raw downloads local; retain provenance notes and directory placeholders.
+/data/raw/**/*
+!/data/raw/**/
+!/data/raw/**/.gitkeep
+!/data/raw/**/*.md
+!/data/raw/**/*.json
+!/data/raw/**/*.yml
+!/data/raw/**/*.yaml
+
+# Override the workspace's processed-directory exclusion to track its placeholder.
+!/data/processed/
+/data/processed/*
+!/data/processed/.gitkeep
+
+# Generated figures, screenshots, and exports.
+/outputs/*
+!/outputs/.gitkeep
