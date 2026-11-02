@@ -1,0 +1,5 @@
+dash==4.5.0
+plotly==7.1.0
+pandas==3.1.0
+pywebview==6.2.1
+pyinstaller==6.22.3

@@ -1,0 +1,36 @@
+{
+  "checked_on": "2026-11-02",
+  "analytical_input": "Only the preserved OWID CSV is used. Links below document its underlying sources, not additional analytical inputs.",
+  "redistribution_audit_complete": false,
+  "sources": [
+    {
+      "name": "Our World in Data CO2 and Greenhouse Gas Emissions dataset",
+      "url": "https://github.com/owid/co2-data",
+      "terms": "OWID-produced material is CC BY; third-party data retain their original terms. Credit OWID and the underlying sources.",
+      "snapshot_provenance": "data/raw/owid/source.json"
+    },
+    {
+      "name": "Global Carbon Budget (2025)",
+      "variables": ["co2", "consumption_co2", "coal_co2", "oil_co2", "gas_co2"],
+      "url": "https://globalcarbonbudget.org/datahub/the-latest-gcb-data-2025/",
+      "status": "Release name verified in the preserved codebook. Complete exact component-version citations and redistribution terms before release."
+    },
+    {
+      "name": "Bolt, Jutta and Jan Luiten van Zanden (2024). Maddison style estimates of the evolution of the world economy: A new 2023 update. Journal of Economic Surveys.",
+      "variables": ["gdp"],
+      "dataset_doi": "10.34894/INZBF2",
+      "paper_doi": "10.1111/joes.12618",
+      "url": "https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2023",
+      "license": "CC BY 4.0",
+      "additional_attribution": "The publisher requires original source papers to be cited when data are shown graphically or subsets of fewer than 12 countries are used. Retrieve and map the source-sheet citations for the selected countries before distributing GDP charts."
+    },
+    {
+      "name": "United Nations DESA, Population Division (2024). World Population Prospects 2024, Online Edition; processed by OWID",
+      "variables": ["population", "co2_per_capita", "consumption_co2_per_capita"],
+      "url": "https://ourworldindata.org/population-sources",
+      "coverage_note": "OWID identifies UN WPP 2024 as the population source from 1950 onward, covering the selected 1990-onward period. Uses present-day boundaries.",
+      "status": "Verify UN reuse terms and final attribution text before redistribution."
+    }
+  ],
+  "release_gate": "Complete underlying-source attribution/terms and expose citations inside the packaged application before final distribution. Local preparation does not imply this audit is finished."
+}

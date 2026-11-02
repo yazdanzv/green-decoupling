@@ -1,0 +1,22 @@
+{
+  "retrieved_at_utc": "2026-11-02T15:28:22.333770+00:00",
+  "purpose": "Read-only preliminary coverage inspection for proposed dashboard questions; not an approved analytical selection.",
+  "files": [
+    {
+      "file": "owid-co2-data.csv",
+      "source_url": "https://owid-public.owid.io/data/co2/owid-co2-data.csv",
+      "resolved_url": "https://owid-public.owid.io/data/co2/owid-co2-data.csv",
+      "sha256": "7ec10de1e9502c20c70bfff54476d7893922f7594aa299d9291d87fe49f3e342",
+      "bytes": 33246106,
+      "last_modified": "Tue, 02 Jun 2026 16:17:17 GMT"
+    },
+    {
+      "file": "owid-co2-codebook.csv",
+      "source_url": "https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-codebook.csv",
+      "resolved_url": "https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-codebook.csv",
+      "sha256": "33b4f5e00efd58c7b83863f736beba1af4df946b43642b0400c3ec38648e0e8e",
+      "bytes": 24149,
+      "last_modified": null
+    }
+  ]
+}

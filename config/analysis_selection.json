@@ -1,0 +1,151 @@
+{
+  "decision_ids": [
+    "D007",
+    "D009",
+    "D010",
+    "D011",
+    "D012",
+    "D013",
+    "D014"
+  ],
+  "dataset": "owid-co2-data.csv",
+  "dataset_sha256": "7ec10de1e9502c20c70bfff54476d7893922f7594aa299d9291d87fe49f3e342",
+  "default_period": {
+    "start_year": 1990,
+    "end_year": 2022,
+    "inclusive": true
+  },
+  "allow_newer_emissions_only_years": true,
+  "selection": {
+    "size": 20,
+    "metric": "co2",
+    "metric_unit": "million tonnes CO2",
+    "reference_year": 2022,
+    "order": "descending metric, ascending ISO code for ties",
+    "fixed_membership": true,
+    "entity_review": "Selected names and ISO codes manually reviewed as individual current countries/territories; no aggregates or historical unions. Three-letter filter used for candidate generation only."
+  },
+  "countries": [
+    {
+      "selection_rank": 1,
+      "iso_code": "CHN",
+      "country": "China",
+      "reference_co2_mt": 11711.8076171875
+    },
+    {
+      "selection_rank": 2,
+      "iso_code": "USA",
+      "country": "United States",
+      "reference_co2_mt": 5055.40283203125
+    },
+    {
+      "selection_rank": 3,
+      "iso_code": "IND",
+      "country": "India",
+      "reference_co2_mt": 2831.131591796875
+    },
+    {
+      "selection_rank": 4,
+      "iso_code": "RUS",
+      "country": "Russia",
+      "reference_co2_mt": 1675.4608154296875
+    },
+    {
+      "selection_rank": 5,
+      "iso_code": "JPN",
+      "country": "Japan",
+      "reference_co2_mt": 1029.6448974609375
+    },
+    {
+      "selection_rank": 6,
+      "iso_code": "IRN",
+      "country": "Iran",
+      "reference_co2_mt": 767.178466796875
+    },
+    {
+      "selection_rank": 7,
+      "iso_code": "IDN",
+      "country": "Indonesia",
+      "reference_co2_mt": 758.0205078125
+    },
+    {
+      "selection_rank": 8,
+      "iso_code": "DEU",
+      "country": "Germany",
+      "reference_co2_mt": 667.843017578125
+    },
+    {
+      "selection_rank": 9,
+      "iso_code": "SAU",
+      "country": "Saudi Arabia",
+      "reference_co2_mt": 666.9935302734375
+    },
+    {
+      "selection_rank": 10,
+      "iso_code": "KOR",
+      "country": "South Korea",
+      "reference_co2_mt": 606.8772583007812
+    },
+    {
+      "selection_rank": 11,
+      "iso_code": "CAN",
+      "country": "Canada",
+      "reference_co2_mt": 547.6576538085938
+    },
+    {
+      "selection_rank": 12,
+      "iso_code": "BRA",
+      "country": "Brazil",
+      "reference_co2_mt": 480.0582885742187
+    },
+    {
+      "selection_rank": 13,
+      "iso_code": "MEX",
+      "country": "Mexico",
+      "reference_co2_mt": 453.7991027832031
+    },
+    {
+      "selection_rank": 14,
+      "iso_code": "TUR",
+      "country": "Turkey",
+      "reference_co2_mt": 443.6026916503906
+    },
+    {
+      "selection_rank": 15,
+      "iso_code": "ZAF",
+      "country": "South Africa",
+      "reference_co2_mt": 428.78216552734375
+    },
+    {
+      "selection_rank": 16,
+      "iso_code": "AUS",
+      "country": "Australia",
+      "reference_co2_mt": 384.0784301757813
+    },
+    {
+      "selection_rank": 17,
+      "iso_code": "ITA",
+      "country": "Italy",
+      "reference_co2_mt": 340.1147155761719
+    },
+    {
+      "selection_rank": 18,
+      "iso_code": "VNM",
+      "country": "Vietnam",
+      "reference_co2_mt": 322.65313720703125
+    },
+    {
+      "selection_rank": 19,
+      "iso_code": "POL",
+      "country": "Poland",
+      "reference_co2_mt": 314.8919677734375
+    },
+    {
+      "selection_rank": 20,
+      "iso_code": "GBR",
+      "country": "United Kingdom",
+      "reference_co2_mt": 311.1180114746094
+    }
+  ],
+  "interpretation": "Country comparisons and rankings concern this selected major-emitter cohort, not all countries. Availability and missing-data handling follow the question-specific rules in P004/D013; no blanket imputation."
+}
