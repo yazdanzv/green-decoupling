@@ -99,7 +99,7 @@ When working from the university workspace, initialize the linked project from
 the workspace root:
 
 ```sh
-git submodule update --init --recursive -- 2026-WS/information-visualization/projects/green-decoupling
+git submodule update --init --recursive -- 2026-WS/visual-data-science/projects/green-decoupling
 ```
 
 Commit and push project changes from inside this project directory. After pushing,

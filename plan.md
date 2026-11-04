@@ -1,6 +1,6 @@
 # Green Decoupling: working plan and decision log
 
-Last updated: 2026-11-02
+Last updated: 2026-11-04
 
 This file is the shared record for discussing, deciding, implementing, and
 checking each stage of the Information Visualization project. The original
@@ -8,6 +8,18 @@ checking each stage of the Information Visualization project. The original
 questions and source choices guide this plan; they are not findings or an
 official course rubric. The original two-source proposal is retained as history;
 D007 supersedes its data integration strategy for the current implementation.
+
+**Workspace relocation — 2026-11-04:** at the user's explicit request, move the
+project from `2026-WS/information-visualization/projects/green-decoupling/` to
+`2026-WS/visual-data-science/projects/green-decoupling/`. Keep the standalone public
+repository and the University workspace's submodule relationship, update the
+workspace and clone instructions, and push the updated University repository.
+Preserve the original proposal and existing project decisions. This changes the
+workspace location; dashboard behaviour and release status are unchanged.
+The submodule resolves from the new directory. Updated 28 ignored local virtual
+environment launch/config files containing the old absolute path; `pip` resolves
+to the relocated environment. All 21 data/dashboard tests passed from the new
+location (`outputs/relocation-tests.log`).
 
 ## How we work through each step
 
